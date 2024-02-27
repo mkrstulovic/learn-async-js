@@ -1,1 +1,17 @@
 Explain the code execution based on the order of the messages logged in src/quiz/promise-2darray.txt.
+
+The order of message in the execution ends up being:
+Sum called ...
+returning from sum
+Sum called ...
+rejecting ...
+returning from sum
+BAD INPUT: Expected array as input
+resolving ...
+
+This is because the summing is an asynchronous function being called here.
+First sumPromise1 and sumPromise2 are both created on the main thread as promises.
+In sumPromise1, the array is valid and the sum part of the function fires.
+This section is encoded within a setTimeout, which asynchronously enqueues the summing.
+This asynchronous call means that this will execute after the main thread creates the promises.
+As such, the resolving section ends up being printed last, after sumPromise2 errors out.
